@@ -1,2 +1,6 @@
 # JetBrains IDEs
 /.idea/
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
