@@ -2,17 +2,11 @@ name: PR-Agent
 
 on:
   pull_request:
-    types: [opened, labeled, unlabeled, synchronize]
+    types: [opened, reopened]
   issue_comment:
 
 jobs:
-  prevent-no-label-execution-pr-agent:
-    uses: autowarefoundation/autoware-github-actions/.github/workflows/prevent-no-label-execution.yaml@v1
-    with:
-      label: tag:pr-agent
   pr_agent_job:
-    needs: prevent-no-label-execution-pr-agent
-    if: ${{ needs.prevent-no-label-execution-pr-agent.outputs.run == 'true' }}
     runs-on: ubuntu-22.04
     permissions:
       issues: write
