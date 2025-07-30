@@ -62,7 +62,9 @@ plugins:
   - macros
   - mkdocs-video
   - same-dir
-  - search
+  # https://squidfunk.github.io/mkdocs-material/plugins/search/#config.separator
+  - search:
+      separator: '[\s\-_,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
 
 markdown_extensions:
   - abbr
