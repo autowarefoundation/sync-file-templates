@@ -85,13 +85,10 @@ markdown_extensions:
       format: svg
   - pymdownx.arithmatex:
       generic: true
-  - pymdownx.tasklist:
-      custom_checkbox: true
   - pymdownx.details
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
-  - pymdownx.details
   - pymdownx.highlight
   - pymdownx.snippets:
       auto_append:
@@ -101,6 +98,8 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - toc:
       permalink: "#"
       toc_depth: 3
