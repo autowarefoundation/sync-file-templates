@@ -9,6 +9,10 @@ on:
     paths:
       - build_depends*.repos
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check-build-depends:
     runs-on: ubuntu-22.04
