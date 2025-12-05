@@ -28,7 +28,7 @@ concurrency:
 
 jobs:
   deploy-docs:
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'run:deploy-docs') }}
+    if: ${{ github.event_name != 'pull_request_target' || contains(github.event.pull_request.labels.*.name, 'run:deploy-docs') }}
     runs-on: ubuntu-22.04
     steps:
       - name: Check out repository
