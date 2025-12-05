@@ -1,13 +1,13 @@
+# This file is automatically synced from:
+# https://github.com/autowarefoundation/sync-file-templates
+# To make changes, update the source repository and follow the guidelines in its README.
+
 name: backport
 on:
   pull_request_target:
     types:
       - closed
       - labeled
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   backport:
@@ -43,16 +43,17 @@ jobs:
           PR_JSON: ${{ steps.backport.outputs.created_pull_requests }}
           ORIGINAL_AUTHOR: ${{ github.event.pull_request.user.login }}
         run: |
+          set -e
           echo "Created PRs JSON: $PR_JSON"
           echo "Original PR Author: $ORIGINAL_AUTHOR"
 
-          # Use 'jq' to parse the JSON and extract all PR numbers (values)
-          # Loop through the extracted PR numbers, one per line
-          echo "$PR_JSON" | jq -r 'to_entries | .[] | .value' | while read -r pr_num; do
+          # Use 'jq' to parse the JSON and extract all PR numbers
+          pr_numbers=($(echo "$PR_JSON" | jq -r 'to_entries | .[] | .value'))
+
+          # Loop through the array of PR numbers
+          for pr_num in "${pr_numbers[@]}"; do
             if [ -n "$pr_num" ]; then
               echo "Requesting review for PR #$pr_num from $ORIGINAL_AUTHOR..."
-
-              # Use the 'gh' CLI to add the reviewer
               gh pr edit "$pr_num" --add-reviewer "$ORIGINAL_AUTHOR" --repo "${{ github.repository }}"
             fi
           done
