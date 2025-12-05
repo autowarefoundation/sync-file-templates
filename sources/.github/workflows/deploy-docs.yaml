@@ -27,14 +27,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  prevent-no-label-execution:
-    uses: autowarefoundation/autoware-github-actions/.github/workflows/prevent-no-label-execution.yaml@v1
-    with:
-      label: run:deploy-docs
-
   deploy-docs:
-    needs: prevent-no-label-execution
-    if: ${{ needs.prevent-no-label-execution.outputs.run == 'true' }}
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'run:deploy-docs') }}
     runs-on: ubuntu-22.04
     steps:
       - name: Check out repository
