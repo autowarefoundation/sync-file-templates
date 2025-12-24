@@ -17,8 +17,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  make-sure-label-is-present:
+    uses: autowarefoundation/autoware-github-actions/.github/workflows/make-sure-label-is-present.yaml@v1
+    with:
+      label: run:build-and-test-differential
+
   build-and-test-differential:
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'run:build-and-test-differential') }}
+    needs: make-sure-label-is-present
+    if: ${{ needs.make-sure-label-is-present.outputs.result == 'true' }}
     runs-on: ubuntu-22.04
     container: ${{ matrix.container }}
     strategy:
