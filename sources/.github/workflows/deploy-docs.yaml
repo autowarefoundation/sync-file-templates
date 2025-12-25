@@ -27,8 +27,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  make-sure-label-is-present:
+    uses: autowarefoundation/autoware-github-actions/.github/workflows/make-sure-label-is-present.yaml@v1
+    with:
+      label: run:deploy-docs
+
   deploy-docs:
-    if: ${{ github.event_name != 'pull_request_target' || contains(github.event.pull_request.labels.*.name, 'run:deploy-docs') }}
+    needs: make-sure-label-is-present
+    if: ${{ needs.make-sure-label-is-present.outputs.result == 'true' }}
     runs-on: ubuntu-22.04
     steps:
       - name: Check out repository
