@@ -1,19 +1,9 @@
-# This file is automatically synced from:
-# https://github.com/autowarefoundation/sync-file-templates
-# To make changes, update the source repository and follow the guidelines in its README.
-
-# Deprecated: Consider removing this workflow if your `.pre-commit-config-optional.yaml` is synced.
-
 name: pre-commit-optional-autoupdate
 
 on:
   schedule:
     - cron: 0 0 1 1,4,7,10 * # quarterly
   workflow_dispatch:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   pre-commit-optional-autoupdate:
@@ -30,7 +20,7 @@ jobs:
         uses: autowarefoundation/autoware-github-actions/pre-commit-autoupdate@v1
         with:
           token: ${{ steps.generate-token.outputs.token }}
-          pre-commit-config: .pre-commit-config-optional.yaml
+          pre-commit-config: sources/.pre-commit-config-optional.yaml
           pr-labels: |
             tag:bot
             tag:pre-commit-autoupdate
