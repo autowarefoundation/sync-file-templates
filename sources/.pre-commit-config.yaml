@@ -6,7 +6,7 @@
 ci:
   autofix_commit_msg: "style(pre-commit): autofix"
   autoupdate_schedule: quarterly
-  autoupdate_commit_msg: "ci(pre-commit-optional): quarterly autoupdate"
+  autoupdate_commit_msg: "ci(pre-commit): quarterly autoupdate"
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
