@@ -2,6 +2,11 @@
 # https://github.com/autowarefoundation/sync-file-templates
 # To make changes, update the source repository and follow the guidelines in its README.
 
+ci:
+  autofix_commit_msg: "style(pre-commit-ansible): autofix"
+  autoupdate_schedule: quarterly
+  autoupdate_commit_msg: "ci(pre-commit-ansible): quarterly autoupdate"
+
 repos:
   - repo: https://github.com/ansible/ansible-lint.git
     rev: v25.8.2
