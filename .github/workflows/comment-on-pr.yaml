@@ -4,7 +4,7 @@ on:
 
 jobs:
   comment-on-pr:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       pull-requests: write
     steps:

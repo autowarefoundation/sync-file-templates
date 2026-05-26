@@ -35,7 +35,7 @@ concurrency:
 
 jobs:
   sync-branches:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Validate inputs and compute PR branch name
         id: prepare
