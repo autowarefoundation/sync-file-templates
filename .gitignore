@@ -4,3 +4,6 @@
 # Visual Studio Code
 .vscode/
 *.code-workspace
+
+# Cache of the prettier pre-commit hook
+node_modules/
