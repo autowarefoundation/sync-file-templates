@@ -1,0 +1,54 @@
+# This file is automatically synced from:
+# https://github.com/autowarefoundation/sync-file-templates
+# To make changes, update the source repository and follow the guidelines in its README.
+
+# Makes sure that the documentation of a pull request can be built.
+# The documentation is deployed by deploy-docs.yaml after the merge.
+name: build-docs
+
+on:
+  pull_request:
+    paths:
+      - mkdocs.yaml
+      - "**/*.md"
+      - "**/*.svg"
+      - "**/*.png"
+      - "**/*.jpg"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.10"
+
+      - name: Install MkDocs
+        run: |
+          set -eu
+
+          # The requirements of the deploy-docs action are reused, so that the
+          # documentation is built with the versions that deploy it.
+          curl -fsSL -o "$RUNNER_TEMP/mkdocs-requirements.txt" \
+            https://raw.githubusercontent.com/autowarefoundation/autoware-github-actions/v1/deploy-docs/mkdocs-requirements.txt
+          pip3 install -U wheel
+          pip3 install -r "$RUNNER_TEMP/mkdocs-requirements.txt"
+
+      - name: Build docs
+        run: |
+          set -eu
+
+          mkdocs build --site-dir "$RUNNER_TEMP/site"

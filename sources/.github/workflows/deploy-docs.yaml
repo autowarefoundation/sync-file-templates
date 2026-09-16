@@ -14,40 +14,26 @@ on:
       - "**/*.svg"
       - "**/*.png"
       - "**/*.jpg"
-  pull_request_target:
-    types:
-      - opened
-      - synchronize
-      - labeled
   workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
-jobs:
-  make-sure-label-is-present:
-    uses: autowarefoundation/autoware-github-actions/.github/workflows/make-sure-label-is-present.yaml@v1
-    with:
-      label: run:deploy-docs
+permissions:
+  contents: write
 
+jobs:
   deploy-docs:
-    needs: make-sure-label-is-present
-    if: ${{ github.event_name != 'pull_request_target' || needs.make-sure-label-is-present.outputs.result == 'true' }}
     runs-on: ubuntu-24.04
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
-          # This job builds fork code with the secrets of the base repository.
-          # It runs only after a maintainer adds the run:deploy-docs label.
-          # Before you add the label, review the full diff.
-          allow-unsafe-pr-checkout: true
 
       - name: Deploy docs
         uses: autowarefoundation/autoware-github-actions/deploy-docs@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          latest: ${{ github.event_name != 'pull_request_target' && github.ref_name == github.event.repository.default_branch }}
+          latest: ${{ github.ref_name == github.event.repository.default_branch }}
