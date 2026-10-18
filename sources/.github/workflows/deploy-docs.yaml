@@ -101,11 +101,11 @@ jobs:
           ARTIFACT_URL: ${{ steps.upload-site.outputs.artifact-url }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          echo "::notice::The site is not published for a pull request from a fork. Download it from the run summary: $ARTIFACT_URL"
+          echo "::notice::The site is not published for a pull request from a fork or from Dependabot. Download it from the run summary: $ARTIFACT_URL"
           {
             echo "## Documentation preview"
             echo
-            echo "This pull request comes from a fork, so the site is built but not published."
+            echo "This pull request comes from a fork or from Dependabot, so the site is built but not published."
             echo
             echo "1. Download the site: [docs-pr-$PR_NUMBER]($ARTIFACT_URL). You must be signed in to GitHub."
             echo "2. Unzip it to a new folder."
@@ -119,6 +119,8 @@ jobs:
   deploy-docs:
     if: ${{ github.event_name != 'pull_request' }}
     runs-on: ubuntu-24.04
+    permissions:
+      contents: write
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
